@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const formSchema = z.object({
-    id: z.string(),
+    id: z.string().optional(),
     name: z.string().min(4, {
         message: "Name must be atleast 4 characters",
     }),
