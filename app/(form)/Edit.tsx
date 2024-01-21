@@ -43,7 +43,7 @@ export const Edit = ({ data }: Updates) => {
     if (result.error) {
       toast.error("Their's something wrong");
     } else {
-      toast.success("Message Added");
+      toast.success("Message Update");
     }
   }
 
