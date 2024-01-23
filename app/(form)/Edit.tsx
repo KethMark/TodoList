@@ -2,7 +2,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import React from "react";
 import { Toaster, toast } from "sonner";
-import { SubmitButtonUpdate } from "./button";
 import { Update } from "@/lib/action";
 import {
   Dialog,
@@ -23,6 +22,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import { PaperPlaneIcon, Pencil1Icon, ReloadIcon } from "@radix-ui/react-icons";
 
 type Updates = {
   data: Message;
@@ -51,7 +51,9 @@ export const Edit = ({ data }: Updates) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>Edit</Button>
+        <Button>
+          <Pencil1Icon />
+        </Button>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -83,7 +85,17 @@ export const Edit = ({ data }: Updates) => {
                 </FormItem>
               )}
             />
-            <SubmitButtonUpdate />
+            <Button
+              type="submit"
+              disabled={form.formState.isSubmitting}
+              className="w-full"
+            >
+              {form.formState.isSubmitting ? (
+                <ReloadIcon className="animate-spin" />
+              ) : (
+                <PaperPlaneIcon className="animate-out" />
+              )}
+            </Button>
           </form>
         </Form>
       </DialogContent>

@@ -1,7 +1,6 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import React, { useRef } from "react";
-import { SubmitButton } from "./button";
 import { useForm } from "react-hook-form";
 import { formSchema } from "@/lib/formschema";
 import { z } from "zod";
@@ -16,6 +15,8 @@ import {
 import { Create } from "@/lib/action";
 import { Toaster, toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
+import { PaperPlaneIcon, ReloadIcon } from "@radix-ui/react-icons";
+import { Button } from "@/components/ui/button";
 
 export const Forms = () => {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -65,7 +66,13 @@ export const Forms = () => {
               </FormItem>
             )}
           />
-          <SubmitButton />
+          <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
+            {form.formState.isSubmitting ? (
+              <ReloadIcon className="animate-spin" />
+            ) : (
+              <PaperPlaneIcon className="animate-out" />
+            )}
+          </Button>
         </form>
       </Form>
     </>
