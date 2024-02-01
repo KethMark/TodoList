@@ -8,7 +8,7 @@ export const GetTodo = async () => {
   noStore();
   const data = await Get();
 
-  if(!data) return "Their's something wrong"
+  if(!!!data) return "Their's something wrong"
 
   return (
     <div>
