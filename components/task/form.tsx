@@ -1,6 +1,6 @@
 "use client";
 import { Input } from "@/components/ui/input";
-import React, { useRef } from "react";
+import React, { useTransition } from "react";
 import { useForm } from "react-hook-form";
 import { formSchema } from "@/lib/formschema";
 import { z } from "zod";
@@ -13,12 +13,13 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Create } from "@/lib/action";
-import { Toaster, toast } from "sonner";
+import { toast } from "sonner";
 import { Textarea } from "@/components/ui/textarea";
-import { PaperPlaneIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 export const Forms = () => {
+  const [isPending, startTransition] = useTransition();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -28,18 +29,19 @@ export const Forms = () => {
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    const result = await Create(data);
-    if (result.error) {
-      toast.error("Their's something wrong");
-    } else {
-      toast.success("Message Added");
-      form.reset();
-    }
+    startTransition( async () => {
+      const result = await Create(data);
+      if (result.error) {
+        toast.error("Their's something wrong");
+      } else {
+        toast.success("Task Added");
+        form.reset();
+      }
+    });
   }
 
   return (
     <>
-      <Toaster richColors position="top-center" />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
@@ -60,18 +62,23 @@ export const Forms = () => {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Textarea placeholder="Message" {...field} />
+                  <Textarea placeholder="Task" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={form.formState.isSubmitting} className="w-full">
-            {form.formState.isSubmitting ? (
-              <ReloadIcon className="animate-spin" />
+          <Button
+            type="submit"
+            disabled={isPending}
+            className="w-full"
+          >
+            {isPending ? (
+              <Loader2 className='mr-2 h-4 w-4 animate-spin'/>
             ) : (
-              <PaperPlaneIcon className="animate-out" />
+              null
             )}
+            Submit
           </Button>
         </form>
       </Form>

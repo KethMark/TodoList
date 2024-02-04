@@ -6,6 +6,7 @@ export const formSchema = z.object({
         message: "Name must be atleast 4 characters",
     }),
     message: z.string().min(10, {
-        message: 'Message must be at least 10 characters'
+        message: 'Task must be at least 10 characters'
     })
 })
+

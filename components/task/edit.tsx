@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import React from "react";
-import { Toaster, toast } from "sonner";
+import React, { useTransition } from "react";
+import { toast } from "sonner";
 import { Update } from "@/lib/action";
 import {
   Dialog,
@@ -22,13 +22,16 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { PaperPlaneIcon, Pencil1Icon, ReloadIcon } from "@radix-ui/react-icons";
+import { PaperPlaneIcon, Pencil1Icon } from "@radix-ui/react-icons";
+import { Loader2 } from "lucide-react";
 
 type Updates = {
   data: Message;
 };
 
 export const Edit = ({ data }: Updates) => {
+  const [isPending, startTransition] = useTransition();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,21 +42,26 @@ export const Edit = ({ data }: Updates) => {
   });
 
   async function onSubmit(data: z.infer<typeof formSchema>) {
-    const result = await Update(data);
-    if (result.error) {
-      toast.error("Their's something wrong");
-    } else {
-      toast.success("Message Update");
-    }
+    startTransition(async () => {
+      const result = await Update(data);
+      if (result.error) {
+        toast.error("Their's something wrong");
+      } else {
+        toast.success("Task Update");
+      }
+    });
   }
 
-  <Toaster richColors position="top-center" />;
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button>
-          <Pencil1Icon />
-        </Button>
+        {data.isCompleted ? (
+          null
+        ) : (
+          <Button>
+            <Pencil1Icon />
+          </Button>
+        )}
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>
@@ -85,13 +93,9 @@ export const Edit = ({ data }: Updates) => {
                 </FormItem>
               )}
             />
-            <Button
-              type="submit"
-              disabled={form.formState.isSubmitting}
-              className="w-full"
-            >
-              {form.formState.isSubmitting ? (
-                <ReloadIcon className="animate-spin" />
+            <Button type="submit" disabled={isPending} className="w-full">
+              {isPending ? (
+                <Loader2 className='h-4 w-4 animate-spin'/>
               ) : (
                 <PaperPlaneIcon className="animate-out" />
               )}
