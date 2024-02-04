@@ -1,3 +1,4 @@
+/* eslint react/no-unescaped-entities */
 import { buttonVariants } from '@/components/ui/button'
 import { cn } from '@/lib/utils'
 import { ChevronLeftIcon } from '@radix-ui/react-icons'

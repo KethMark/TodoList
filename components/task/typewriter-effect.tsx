@@ -1,4 +1,5 @@
 "use client";
+/* eslint react/no-unescaped-entities: off */
 import Link from "next/link";
 import { TypewriterEffect } from "../ui/typewriter-effect";
 
