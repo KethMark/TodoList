@@ -33,10 +33,8 @@ export const DrawerPop = async ({get}: DrawerData) => {
       <DrawerContent>
         <DrawerHeader>
         <div className="text-center">
-          {/* {get?.user.name && <DrawerTitle>{get?.user.name}</DrawerTitle>}
-          {get?.user.email && <DrawerDescription>{get?.user.email}</DrawerDescription>} */}
-          <DrawerTitle>Task</DrawerTitle>
-          <DrawerDescription>you can view all data in task</DrawerDescription>
+          <DrawerTitle>TASK</DrawerTitle>
+          <DrawerDescription>authorized account have full access.</DrawerDescription>
         </div>
         </DrawerHeader>
         <DrawerFooter>

@@ -6,13 +6,13 @@ import { CommitIcon } from "@radix-ui/react-icons";
 export const columns: ColumnDef<Message>[] = [
   {
     accessorKey: 'isCompleted',
-    header: 'Completed',
+    header: 'Mark as done',
     cell: ({ row }) => {
       const task = row.original;
 
       return (
         <div>
-          {task.isCompleted? <Cancel task={task}/>: <CommitIcon/> }
+          {task.isCompleted? <Cancel task={task}/>: null }
         </div>
       )
     }
